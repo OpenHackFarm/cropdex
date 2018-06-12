@@ -28,17 +28,19 @@
           if(value['min_growing_temperature'] && value['max_growing_temperature']) {
             row['temperature'] = '生長適溫：' + value['min_growing_temperature'] + ' ~ ' + value['max_growing_temperature'] + '℃';
           }
+          if(value['avg_total_growing_days']){ row['days'] = '生育日數：平均約 ' + value['avg_total_growing_days'] + ' 天'; }
         } else {
           row['spread'] = '間距：' + (value['spread'] ? value['spread'] : '- -') + ' cm';
           row['height'] = '高度：' + (value['height'] ? value['height'] : '- -') + ' cm';
           row['temperature'] = '生長適溫：' + (value['min_growing_temperature'] ? value['min_growing_temperature'] : '') + ' ~ ' + (value['max_growing_temperature'] ? value['max_growing_temperature'] : '') + ' ℃';
+          row['days'] = '生育日數：' + (value['avg_total_growing_days'] ? '平均約 ' + value['avg_total_growing_days'] : '- - ') + ' 天';
         }
 
         new_data.push(row);
       });
 
       var orgchart = new getOrgChart(document.getElementById("people"), {
-        primaryFields: ["binomial", "name", "spread", "height", "temperature"],
+        primaryFields: ["binomial", "name", "spread", "height", "temperature", "days"],
         gridView: true,
         layout: getOrgChart.MIXED_HIERARCHY_RIGHT_LINKS,
         color: "green",
