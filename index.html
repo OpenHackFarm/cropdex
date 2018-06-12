@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="getorgchart/getorgchart.js"></script>
+
+    <link href="getorgchart/getorgchart.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div id="people"></div>
+  <script>
+    $.get('https://api.openhackfarm.tw/testing/crop_chart', function(data, status){
+      var new_data = [];
+
+      $.each(data, function( index, value ) {
+        row = {};
+
+        row['id'] = value['uuid'];
+        row['parentId'] = value['inherit'];
+        row['binomial'] = value['binomial_name'] ? value['binomial_name'] : '';
+        row['binomial'] = row['binomial'] + (value['variety_tmp'] ? ' (' + value['variety_tmp'] + ')' : '');
+        row['name'] = value['name'] ? value['name'] : '';
+        row['pic'] = value['cover'];
+
+        if(row['binomial'].indexOf('科') == row['binomial'].length - 1 || row['binomial'].indexOf('屬') == row['binomial'].length - 1 || row['binomial'].indexOf('科)') == row['binomial'].length - 2 ) {
+          if(value['spread']){ row['spread'] = '間距：' + value['spread'] + ' cm'; }
+          if(value['height']){ row['height'] = '高度：' + value['height'] + ' cm'; }
+          if(value['min_growing_temperature'] && value['max_growing_temperature']) {
+            row['temperature'] = '生長適溫：' + value['min_growing_temperature'] + ' ~ ' + value['max_growing_temperature'] + '℃';
+          }
+        } else {
+          row['spread'] = '間距：' + (value['spread'] ? value['spread'] : '- -') + ' cm';
+          row['height'] = '高度：' + (value['height'] ? value['height'] : '- -') + ' cm';
+          row['temperature'] = '生長適溫：' + (value['min_growing_temperature'] ? value['min_growing_temperature'] : '') + ' ~ ' + (value['max_growing_temperature'] ? value['max_growing_temperature'] : '') + ' ℃';
+        }
+
+        new_data.push(row);
+      });
+
+      var orgchart = new getOrgChart(document.getElementById("people"), {
+        primaryFields: ["binomial", "name", "spread", "height", "temperature"],
+        gridView: true,
+        layout: getOrgChart.MIXED_HIERARCHY_RIGHT_LINKS,
+        color: "green",
+        scale: 0.4,
+        expandToLevel: 5,
+        enableEdit: false,
+        photoFields: ["pic"],
+        customize: {
+          "3": { color: "lightgreen" }
+        },
+        dataSource: new_data
+      });
+    });
+  </script>
+  </body>
+</html>
