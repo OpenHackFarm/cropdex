@@ -17,6 +17,7 @@
 
         row['id'] = value['uuid'];
         row['parentId'] = value['inherit'];
+        row['uuid'] = value['uuid'];
         row['binomial'] = value['binomial_name'] ? value['binomial_name'] : '';
         row['binomial'] = row['binomial'] + (value['variety_tmp'] ? ' (' + value['variety_tmp'] + ')' : '');
         row['name'] = value['name'] ? value['name'] : '';
@@ -54,7 +55,7 @@
       });
 
       var orgchart = new getOrgChart(document.getElementById("people"), {
-        primaryFields: ["binomial", "name", "spread", "height", "pH", "temperature", "days"],
+        primaryFields: ["binomial", "name", "spread", "height", "pH", "temperature", "days", "uuid"],
         gridView: true,
         layout: getOrgChart.MIXED_HIERARCHY_RIGHT_LINKS,
         color: "green",
