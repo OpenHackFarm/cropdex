@@ -25,6 +25,13 @@
         if(row['binomial'].indexOf('科') == row['binomial'].length - 1 || row['binomial'].indexOf('屬') == row['binomial'].length - 1 || row['binomial'].indexOf('科)') == row['binomial'].length - 2 ) {
           if(value['spread']){ row['spread'] = '間距：' + value['spread'] + ' cm'; }
           if(value['height']){ row['height'] = '高度：' + value['height'] + ' cm'; }
+          if(value['min_pH'] && value['max_pH']) {
+            if(value['min_pH'] == value['max_pH']){
+                row['pH'] = '酸鹼度：' + value['min_pH'];
+            } else {
+                row['pH'] = '酸鹼度：' + value['min_pH'] + ' ~ ' + value['max_pH'];
+            }
+          }
           if(value['min_growing_temperature'] && value['max_growing_temperature']) {
             row['temperature'] = '生長適溫：' + value['min_growing_temperature'] + ' ~ ' + value['max_growing_temperature'] + '℃';
           }
@@ -32,6 +39,13 @@
         } else {
           row['spread'] = '間距：' + (value['spread'] ? value['spread'] : '- -') + ' cm';
           row['height'] = '高度：' + (value['height'] ? value['height'] : '- -') + ' cm';
+          if(value['min_pH'] && value['max_pH']) {
+            if(value['min_pH'] == value['max_pH']){
+                row['pH'] = '酸鹼度：' + value['min_pH'];
+            } else {
+                row['pH'] = '酸鹼度：' + value['min_pH'] + ' ~ ' + value['max_pH'];
+            }
+          }
           row['temperature'] = '生長適溫：' + (value['min_growing_temperature'] ? value['min_growing_temperature'] : '') + ' ~ ' + (value['max_growing_temperature'] ? value['max_growing_temperature'] : '') + ' ℃';
           row['days'] = '生育日數：' + (value['avg_total_growing_days'] ? '平均約 ' + value['avg_total_growing_days'] : '- - ') + ' 天';
         }
@@ -40,7 +54,7 @@
       });
 
       var orgchart = new getOrgChart(document.getElementById("people"), {
-        primaryFields: ["binomial", "name", "spread", "height", "temperature", "days"],
+        primaryFields: ["binomial", "name", "spread", "height", "pH", "temperature", "days"],
         gridView: true,
         layout: getOrgChart.MIXED_HIERARCHY_RIGHT_LINKS,
         color: "green",
